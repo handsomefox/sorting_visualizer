@@ -19,13 +19,13 @@ public:
     void Run();
 
 private:
-    void ResetScreen();
-    void Render(SortType);
-    void RenderVec(const std::vector<Element> &);
-    void RenderRect(const Position &, const Size &, const Color &);
-    void RenderText(const std::string &, const Position &, uint32_t size);
-    void RenderOptions();
-    void BubbleSort(std::vector<Element>);
+    void ResetScreen() const;
+    void Render(SortType) const;
+    void RenderVec(const std::vector<Element> &) const;
+    void RenderRect(const Position &, const Size &, const Color &) const;
+    void RenderText(const std::string &, const Position &, unsigned int size) const;
+    void RenderOptions() const;
+    void BubbleSort(std::vector<Element>) const;
     void HandleEvents(const SDL_Event &);
 
 private:

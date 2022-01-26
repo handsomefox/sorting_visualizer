@@ -6,7 +6,7 @@ class Timer {
 public:
     Timer();
     void stop();
-    int64_t GetElapsed();
+    [[nodiscard]] int64_t GetElapsed() const;
 
 private:
     using clock = std::chrono::high_resolution_clock;

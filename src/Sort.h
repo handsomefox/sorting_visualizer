@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Structs.h"
-#include <vector>
 
 class Sort {
 public:

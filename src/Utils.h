@@ -15,21 +15,21 @@ namespace Utils {
         e.color = Colors::White;
     }
 
-    static int32_t RandomInt(int32_t min, int32_t max) {
+    static int RandomInt(const int min, const int max) {
         std::random_device device;
         std::default_random_engine engine(device());
-        std::uniform_int_distribution<int32_t> dist(min, max);
+        const std::uniform_int_distribution dist(min, max);
         return dist(engine);
     }
 
-    static double RandomReal(double min, double max) {
+    static double RandomReal(const double min, const double max) {
         std::random_device device;
         std::default_random_engine engine(device());
-        std::uniform_real_distribution<double> dist(min, max);
+        const std::uniform_real_distribution dist(min, max);
         return dist(engine);
     }
 
-    static std::vector<Element> RandomVector(std::size_t size) {
+    static std::vector<Element> RandomVector(const std::size_t size) {
         std::vector<Element> vector;
         vector.reserve(size);
 

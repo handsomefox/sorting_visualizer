@@ -4,7 +4,7 @@
 #include "Timer.h"
 #include "Utils.h"
 
-Renderer::Renderer(const char *title, int width, int height) : mWindowInformation({title, width, height}) {
+Renderer::Renderer(const char *title, const int width, const int height) : mWindowInformation({title, width, height}) {
 }
 
 Renderer::~Renderer() {
@@ -57,11 +57,15 @@ void Renderer::Run() {
 
 void Renderer::HandleEvents(const SDL_Event &e) {
     switch (e.type) {
+        default:
+            break;
         case SDL_QUIT:
             isRunning = false;
             break;
         case SDL_KEYDOWN:
             switch (e.key.keysym.sym) {
+                default:
+                    break;
                 case SDLK_ESCAPE:
                     isRunning = false;
                     break;
@@ -77,9 +81,9 @@ void Renderer::HandleEvents(const SDL_Event &e) {
 }
 
 
-void Renderer::Render(SortType type) {
+void Renderer::Render(const SortType type) const {
     ResetScreen();
-    auto vec = Utils::RandomVector(Utils::RandomInt(10, 500));
+    const auto vec = Utils::RandomVector(250);
 
     switch (type) {
         case SortType::None:
@@ -94,7 +98,7 @@ void Renderer::Render(SortType type) {
     }
 }
 
-void Renderer::RenderOptions() {
+void Renderer::RenderOptions() const {
     const static std::vector<std::string> options{
             "Press ESC to exit",
             "Press B to start Bubble Sort",
@@ -106,44 +110,44 @@ void Renderer::RenderOptions() {
 }
 
 
-void Renderer::ResetScreen() {
+void Renderer::ResetScreen() const {
     SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
     SDL_RenderClear(mRenderer);
 }
 
-void Renderer::RenderVec(const std::vector<Element> &vector) {
-    int w = mWindowInformation.width / (int) vector.size();
+void Renderer::RenderVec(const std::vector<Element> &vector) const {
+    const int w = mWindowInformation.width / static_cast<int>(vector.size());
     for (std::size_t i = 0; i < vector.size(); ++i) {
-        int h = -(int) (vector[i].value * mWindowInformation.height);
-        int x = (w + 1) * (int) i;
-        int y = mWindowInformation.height - 5;
+        const int h = -static_cast<int>(vector[i].value * mWindowInformation.height);
+        const int x = (w + 1) * static_cast<int>(i);
+        const int y = mWindowInformation.height - 5;
         RenderRect({x, y}, {w, h}, vector[i].color);
     }
     SDL_RenderPresent(mRenderer);
     SDL_UpdateWindowSurface(mWindow);
 }
 
-void Renderer::RenderRect(const Position &pos, const Size &size, const Color &color) {
-    SDL_Rect rect{pos.x, pos.y, size.w, size.h};
+void Renderer::RenderRect(const Position &pos, const Size &size, const Color &color) const {
+    const SDL_Rect rect{pos.x, pos.y, size.w, size.h};
     SDL_SetRenderDrawColor(mRenderer, color.r, color.g, color.b, color.a);
     SDL_RenderFillRect(mRenderer, &rect);
 }
 
-void Renderer::RenderText(const std::string &text, const Position &pos, uint32_t size) {
-    TTF_Font *font = TTF_OpenFont("Roboto-Regular.ttf", (int) size);
+void Renderer::RenderText(const std::string &text, const Position &pos, const unsigned int size) const {
+    TTF_Font *font = TTF_OpenFont("Roboto-Regular.ttf", static_cast<int>(size));
     if (font == nullptr) {
         printf("Font couldn't be opened!\n");
         return;
     }
 
-    SDL_Color color = {255, 255, 255};
+    constexpr SDL_Color color = {255, 255, 255};
     SDL_Surface *surface = TTF_RenderText_Solid(font, text.c_str(), color);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(mRenderer, surface);
 
     int w = 0;
     int h = 0;
     SDL_QueryTexture(texture, nullptr, 0, &w, &h);
-    SDL_Rect rect = {pos.x, pos.y, w, h};
+    const SDL_Rect rect = {pos.x, pos.y, w, h};
 
     SDL_RenderCopy(mRenderer, texture, 0, &rect);
     SDL_RenderPresent(mRenderer);
@@ -153,7 +157,7 @@ void Renderer::RenderText(const std::string &text, const Position &pos, uint32_t
     TTF_CloseFont(font);
 }
 
-void Renderer::BubbleSort(std::vector<Element> vec) {
+void Renderer::BubbleSort(std::vector<Element> vec) const {
     Timer timer;
     for (std::size_t i = 0; i < vec.size() - 1; ++i) {
         for (std::size_t j = 0; j < vec.size() - i - 1; ++j) {
